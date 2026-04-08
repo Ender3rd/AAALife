@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,6 +16,7 @@ import com.example.aaalife.repository.UserRepository;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
     @Autowired
@@ -45,7 +47,7 @@ public class SecurityConfig {
 
             @Override
             public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                User user = userRepository.getByName(username)
+                User user = userRepository.findByName(username)
                     .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
                 return toDetails(user);
             }
@@ -62,18 +64,17 @@ public class SecurityConfig {
 
             @Override
             public void deleteUser(String username) {
-                userRepository.delete(userRepository.getByName(username).orElseThrow(() -> new UsernameNotFoundException("User not found: " + username)));
+                userRepository.delete(userRepository.findByName(username).orElseThrow(() -> new UsernameNotFoundException("User not found: " + username)));
             }
 
             @Override
             public void changePassword(String oldPassword, String newPassword) {
-                // TODO Auto-generated method stub
                 throw new UnsupportedOperationException("Unimplemented method 'changePassword'");
             }
 
             @Override
             public boolean userExists(String username) {
-                return userRepository.getByName(username).isPresent();
+                return userRepository.findByName(username).isPresent();
             }
             
         };

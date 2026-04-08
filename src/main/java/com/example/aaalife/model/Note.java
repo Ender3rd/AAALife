@@ -17,23 +17,23 @@ public class Note {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     @CreatedDate
     private Instant createdAt;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private Long parentId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private String parentType;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private Long relatesToId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private String relatesToType;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "TEXT", updatable = false)
     private String content;
 
     public Note() {}

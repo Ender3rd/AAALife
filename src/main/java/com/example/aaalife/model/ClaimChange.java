@@ -6,6 +6,7 @@ import java.time.Instant;
 
 import org.springframework.data.annotation.CreatedDate;
 
+// immutable record of a change to a claim, used for auditing and tracking claim history. Each time a claim is created or its status changes, a new ClaimChange record is created.
 @Entity
 @Table(indexes = {
     @Index(name = "idx_claim_change_claim", columnList = "claim_id"),
@@ -18,20 +19,20 @@ public class ClaimChange {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     @CreatedDate
     private Instant createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "claim_id", nullable = false)
+    @JoinColumn(name = "claim_id", nullable = false, updatable = false)
     private Claim claim;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false, updatable = false)
     private User user;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private ClaimStatus status;
 
     public ClaimChange() {}

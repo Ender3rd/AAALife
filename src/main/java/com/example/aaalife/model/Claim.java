@@ -18,16 +18,13 @@ public class Claim {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     @CreatedDate
     private Instant createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "policy_id", nullable = false)
+    @JoinColumn(name = "policy_id", nullable = false, updatable = false)
     private Policy policy;
-
-    @Column(nullable = false)
-    private LocalDate dueDate;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -39,9 +36,8 @@ public class Claim {
 
     public Claim() {}
 
-    public Claim(Policy policy, LocalDate dueDate) {
+    public Claim(Policy policy) {
         this.policy = policy;
-        this.dueDate = dueDate;
         this.status = ClaimStatus.Created; // initial status
     }
 
@@ -54,9 +50,6 @@ public class Claim {
 
     public Policy getPolicy() { return policy; }
     public void setPolicy(Policy policy) { this.policy = policy; }
-
-    public LocalDate getDueDate() { return dueDate; }
-    public void setDueDate(LocalDate dueDate) { this.dueDate = dueDate; }
 
     public ClaimStatus getStatus() { return status; }
     public void setStatus(ClaimStatus status) { this.status = status; }

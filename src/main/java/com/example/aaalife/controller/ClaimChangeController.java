@@ -7,8 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/claim-changes")
 public class ClaimChangeController {
@@ -19,11 +17,6 @@ public class ClaimChangeController {
     public ClaimChangeController(ClaimChangeService claimChangeService, ClaimChangeRepository claimChangeRepository) {
         this.claimChangeService = claimChangeService;
         this.claimChangeRepository = claimChangeRepository;
-    }
-
-    @GetMapping
-    public List<ClaimChange> getAll() {
-        return claimChangeRepository.findAll();
     }
 
     @GetMapping("/{id}")

@@ -23,29 +23,29 @@ public class Document {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     @CreatedDate
     private Instant createdAt;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private Long parentId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private String parentType;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private Long relatesToId;
 
     @Column(nullable = false)
     private String relatesToType;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private Long fileSize;
 
     @Column(nullable = false)
     private String fileLocation;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private String fileHash;
 
     public Document() {}

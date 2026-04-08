@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/documents")
@@ -16,11 +15,6 @@ public class DocumentController {
 
     public DocumentController(DocumentRepository documentRepository) {
         this.documentRepository = documentRepository;
-    }
-
-    @GetMapping
-    public List<Document> getAll() {
-        return documentRepository.findAll();
     }
 
     @GetMapping("/{id}")

@@ -20,11 +20,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     @CreatedDate
     private Instant createdAt;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private String username;
 
     @Enumerated(EnumType.STRING)

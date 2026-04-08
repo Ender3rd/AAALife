@@ -1,16 +1,15 @@
 # Compile and Run Instructions
 TODO
 
-
- ## Implementation Notes
- - Account, Policy, and User are mostly stub objects.
- - ClaimChange could be altered to be the entire auditing system, but that would complicate scaling. Better to keep it to major changes and handle detailed audits more properly.
- - Updates to ClaimStatus must include the id of the previous ClaimStatus in the request so that the DB transaction can be failed if a race condition occurs. If needed, each session can have a unique request ID (probably cookie) to handle race conditions and mitigate replay/DDoS attacks in a general way.
- - The headers etag, stale-while-validate, and stale-while-error should be set, where appropriate, on all responses to GET requests (and elsewhere).
- - Any API which does not specify a Role(s) which are acceptable MUST NOT run its business logic and SHOULD fail before any integrations in the CoR are triggered.
-
+## Notes
+getAll is generally not available. Clients are expected to navigate down the object tree or to use dedicated search methods. Security and scalability improvement.
+Dedicated search methods are provided to navigate more quickly for what we anticipate to be common use cases. Analytics can be used to update our expectations over time.
+Most dedicated methods will have a start date. Later an end date. Again, to improve scale.
+Dedicated search methods have relevant indices created for them.
+ 
 ## What is included
 - Auditing via log4j, other CoR integrations.
+- Almost all entries are immutable for auditing.
 - Claim creation and status updating.
 - Document upload and storage.
 - Note creation.
@@ -19,6 +18,11 @@ TODO
 
 ## What is omitted
 - Account and Policy are stub objects, for other non-claim stories to flesh out.
+- ClaimChange could be altered to be the entire auditing system, but that would complicate scaling. Better to keep it to major changes and handle detailed audits more properly.
+- Updates to ClaimStatus must include the id of the previous ClaimStatus in the request so that the DB transaction can be failed if a race condition occurs. If needed, each session can have a unique request ID (probably cookie) to handle race conditions and mitigate replay/DDoS attacks in a general way.
+- The headers etag, stale-while-validate, and stale-while-error should be set, where appropriate, on all responses to GET requests (and elsewhere).
+- Any API which does not specify a Role(s) which are acceptable MUST NOT run its business logic and SHOULD fail before any integrations in the CoR are triggered.
+- Data structures for authentication and authorization are present but not enforced. All passwords are blank and cannot be stored. To encourage proper productionization.
 - User CRUD (including role grants) are not given APIs. Proper implementation is not feasible in this timeframe and so manual db entry is more secure until integration with OAuth, Active Directory or a secure local authentication and authorization mechanism can be implemented.
 - UI is unimplemented
 - Terraform and other deployment automation.

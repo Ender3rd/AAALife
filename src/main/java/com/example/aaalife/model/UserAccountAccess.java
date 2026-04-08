@@ -10,7 +10,7 @@ import jakarta.persistence.*;
 @Table(name = "user_account_access", indexes = {
     @Index(name = "idx_user_account_access_user", columnList = "user_id"),
     @Index(name = "idx_user_account_access_account", columnList = "account_id"),
-    @Index(name = "idx_user_account_access_unique", columnList = "user_id, account_id", unique = true)
+    @Index(name = "idx_user_account_access_unique", columnList = "user_id, account_id, deleted_at", unique = true)
 })
 public class UserAccountAccess {
 
@@ -18,16 +18,20 @@ public class UserAccountAccess {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     @CreatedDate
     private Instant createdAt;
 
+    @Column(nullable = false, updatable = false)
+    @CreatedDate
+    private Instant deletedAt;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false, updatable = false)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "account_id", nullable = false)
+    @JoinColumn(name = "account_id", nullable = false, updatable = false)
     private Account account;
 
     public UserAccountAccess() {}
@@ -43,6 +47,9 @@ public class UserAccountAccess {
 
     public Instant getCreatedAt() { return createdAt; }
     public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
+
+    public Instant getDeletedAt() { return deletedAt; }
+    public void setDeletedAt(Instant deletedAt) { this.deletedAt = deletedAt; }
 
     public User getUser() { return user; }
     public void setUser(User user) { this.user = user; }
