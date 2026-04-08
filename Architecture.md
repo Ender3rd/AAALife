@@ -101,7 +101,7 @@ All have a creation time, ID.
  ### Object Relationships
  - 1 Account : Many Policies
  - 1 Account : Many User
- - 1 User : 0-Many Accounts (Note: 0 is implicitly all. Multiple is an Adjuster limited to certain accounts)
+ - 1 User : 1-Many Accounts (Note: Multiple is an Adjuster limited to certain accounts. There will be a special ALL_ACCOUNTS account so that excessive permissions are less likely to be accidentally granted)
  - Many User : Many Role (Note: Maybe Many:1)
  - 1 Policy : Many Claim
  - 1 User : Many ClaimChange
