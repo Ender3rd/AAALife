@@ -23,6 +23,7 @@ public class ClaimChangeService {
         // Update the claim's status to the latest
         claimChange.getClaim().setStatus(saved.getStatus());
         claimRepository.save(claimChange.getClaim());
+        // TODO: fail the claim change if there might be a concurrent update issue
         return saved;
     }
 }
