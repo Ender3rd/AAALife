@@ -50,6 +50,18 @@
     - Auditing destination with write-once guarantees from a third party.
     - Compliance audits will be easy.
     - If not available, other storage could be used after confirming compliance.
+- Web Application Firewall (WAF)
+    - AWS WAF, Cloudflare, etc.
+    - DoS mitigation
+    - Security monitoring and mitigation
+    - SSL offloading
+    - Compression Offloading
+- Firewall
+    - it's a firewall
+- HTTP Caching Proxy
+    - Squid, etc.
+    - Offloading caching from the server
+    - Including microservice to microservice calls
 
 ## Database
 ### Domain Objects (Also DB Tables)
@@ -105,12 +117,15 @@ All have a creation time, ID.
  - ClaimStatus (claim, created) - for current status
 
  ## Auditing and Integrations
-Each create call will trigger configurable middleware in two rounds. The first round will use interceptors to implement a Chain of Responsibility (CoR) for each request. Each link will be isolated from the others for exception handling, but will be able to terminate the chain. The first link triggered will always be auditing. The next security links, then integrations. The chain will be as early as feasible in HTTP processing to better scale when shedding load. The second round will be after the DB transaction is confirmed. That round will use an interceptor or similar to trigger an SNS, Kafka, or similar Observer framework to integrate with payments, ticketing systems, etc.
+API call will trigger configurable middleware in two rounds. The first round will use interceptors to implement a Chain of Responsibility (CoR) preceeding each request. This will mostly be for security, fraud, auditing, authentication, and authorization checks. The second round will be after the DB transaction is confirmed. That round will use an interceptor or similar to trigger an eventing system such as kafka to integrate with payments, ticketing systems, fraud detection, etc.
+
+In the chain of responsibility middleware is primarily aimed at security applications such as DoS mitigation. Each link will be isolated from the others for exception handling, but will be able to terminate the chain. The first link triggered will always be auditing. The next links security, then integrations. The chain will be as early as feasible in HTTP processing to better scale when shedding load. 
+
 If further reliability is needed the DB tables can have an extra column for messageSent, which is updated on successful completion of the second round. A batch job can be used to re-trigger missed rounds. The successful completion of the first round is implicit in the existence of the DB row.
 Additional safeguards against excess load can be triggered with speciality cases in the Chain of Responsibility for things like resource exhaustion. Second-order Chains of Responsibility (or Strategy wrappers) around integration links can handle timeouts, exponential backoff, etc. to protect the system against failing external integrations.
+
 The earliest link in the request CoR will be a log4j message which can be directed via configuration into a separate audit log on top of the routine debugging-oriented logs. Other interceptors can be used to integrate with specific auditing systems. This audit log can be configured to work with append-only filesystems, off-box filesystems (FSx), or other secure mechanisms.
 User authentication and authorization can be changed by altering the CoR configuration to use Active Directory, OAuth, etc. in whichever combination is desired.
-In the absence of an AWF, DDos protection, etc. an interceptor which checks and increments a counter in a distributed cache (redis) can be used to reject requests with excessive volume per user, source IP, API, etc. Histograms can be used to provide a mix of history and rate information.
 
  ## Notes
  - Account, Policy, and User are mostly stub objects.
@@ -121,6 +136,7 @@ In the absence of an AWF, DDos protection, etc. an interceptor which checks and 
  - The full range of CRUD is not available to any object in this microservice. Row deletion is handled in dedicated cleanup functions only. Updates are limited to adapting to information from integrations with payments, underwriting, etc.
  - The headers etag, stale-while-validate, and stale-while-error should be set, where appropriate, on all responses to GET requests (and elsewhere).
  - Any API which does not specify a Role(s) which are acceptable MUST NOT run its business logic and SHOULD fail before any integrations in the CoR are triggered.
+ - These choices represent an architecture for a large-scale actively managed web application. One for which the heavyweight nature of the many subsystems is worthwhile because the capabilities of each are utilized effectively. If a more startup/quick to create design is needed, only the application code (microservice), structured database, and durable storage are essential. The other services could be partially implemented with an extension of the Chain of Responsibility configuration, temporarily moved out of scope, or worked around.
 
 ## What is included
 - Auditing via log4j, other CoR integrations, event monitoring integrations.
