@@ -30,6 +30,15 @@ public class AccountController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/{id}/claims")
+    public ResponseEntity<Collection<Claim>> getClaimsById(@PathVariable Long id) {
+        return accountRepository.findById(id)
+                .map(account -> ResponseEntity.ok(account.getPolicies().stream()
+                        .flatMap(policy -> policy.getClaims().stream())
+                        .collect(Collectors.toList())))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @PostMapping
     public ResponseEntity<Account> create(@RequestBody Account account) {
         Account saved = accountRepository.save(account);
