@@ -1,0 +1,57 @@
+package com.example.aaalife.model;
+
+import jakarta.persistence.*;
+import java.time.LocalDate;
+import java.util.List;
+
+@Entity
+@Table(indexes = {
+    @Index(name = "idx_claim_policy", columnList = "policy_id"),
+    @Index(name = "idx_claim_status", columnList = "status"),
+    @Index(name = "idx_claim_due_date", columnList = "dueDate")
+})
+public class Claim {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "policy_id", nullable = false)
+    private Policy policy;
+
+    @Column(nullable = false)
+    private LocalDate dueDate;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ClaimStatus status;
+
+    @OneToMany(mappedBy = "claim", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("createdAt DESC")
+    private List<ClaimChange> claimChanges;
+
+    public Claim() {}
+
+    public Claim(Policy policy, LocalDate dueDate) {
+        this.policy = policy;
+        this.dueDate = dueDate;
+        this.status = ClaimStatus.Created; // initial status
+    }
+
+    // Getters and setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public Policy getPolicy() { return policy; }
+    public void setPolicy(Policy policy) { this.policy = policy; }
+
+    public LocalDate getDueDate() { return dueDate; }
+    public void setDueDate(LocalDate dueDate) { this.dueDate = dueDate; }
+
+    public ClaimStatus getStatus() { return status; }
+    public void setStatus(ClaimStatus status) { this.status = status; }
+
+    public List<ClaimChange> getClaimChanges() { return claimChanges; }
+    public void setClaimChanges(List<ClaimChange> claimChanges) { this.claimChanges = claimChanges; }
+}
