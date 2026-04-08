@@ -16,5 +16,6 @@ public class AaaLifeApplication {
         // TODO integrate with log4j
         // TODO concrete demo of both CoR and eventing
         // TODO additional claims metadata?
+        // test of threaded comments.
     }
 }

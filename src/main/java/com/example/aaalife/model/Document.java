@@ -1,5 +1,12 @@
 package com.example.aaalife.model;
 
+import java.time.Instant;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.annotation.CreatedDate;
+
+import com.example.aaalife.service.ContentService;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -9,12 +16,15 @@ import jakarta.persistence.*;
 })
 public class Document {
 
+    @Autowired
+    public static ContentService contentService;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    @GeneratedValue(strategy = GenerationType.TIMESTAMP)
+    @CreatedDate
     private Instant createdAt;
 
     @Column(nullable = false)
@@ -77,4 +87,8 @@ public class Document {
 
     public String getFileHash() { return fileHash; }
     public void setFileHash(String fileHash) { this.fileHash = fileHash; }
+
+    public String getContent() {
+        return ContentService.getContent(fileLocation);
+    }
 }

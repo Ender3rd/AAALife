@@ -1,7 +1,11 @@
 package com.example.aaalife.model;
 
 import jakarta.persistence.*;
+
+import java.time.Instant;
 import java.util.List;
+
+import org.springframework.data.annotation.CreatedDate;
 
 @Entity
 @Table(indexes = {
@@ -14,7 +18,7 @@ public class Account {
     private Long id;
 
     @Column(nullable = false)
-    @GeneratedValue(strategy = GenerationType.TIMESTAMP)
+    @CreatedDate
     private Instant createdAt;
 
     @Column(nullable = false)
@@ -23,6 +27,7 @@ public class Account {
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Policy> policies;
 
+    // creating user is not automatically given access in case the account is created by a customer support person.
     public Account() {}
 
     public Account(String name) {

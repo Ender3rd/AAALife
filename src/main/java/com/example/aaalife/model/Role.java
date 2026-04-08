@@ -4,5 +4,8 @@ public enum Role {
     Customer,
     Adjuster,
     Payments,
-    Underwriting
+    Underwriting,
+    CustomerSupport,
+    Admin,
+    Developer
 }

@@ -1,22 +1,25 @@
 package com.example.aaalife.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+
+import java.time.Instant;
+
+import org.springframework.data.annotation.CreatedDate;
 
 @Entity
 @Table(indexes = {
     @Index(name = "idx_claim_change_claim", columnList = "claim_id"),
     @Index(name = "idx_claim_change_user", columnList = "user_id"),
-    @Index(name = "idx_claim_change_created_at", columnList = "createdAt")
+    @Index(name = "idx_claim_change_created_at", columnList = "createdAt"),
+    @Index(name = "idx_claim_change_status_by_time", columnList = "createdAt, status")
 })
 public class ClaimChange {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    @GeneratedValue(strategy = GenerationType.TIMESTAMP)
+    @CreatedDate
     private Instant createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -31,16 +34,12 @@ public class ClaimChange {
     @Column(nullable = false)
     private ClaimStatus status;
 
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
-
     public ClaimChange() {}
 
     public ClaimChange(Claim claim, User user, ClaimStatus status) {
         this.claim = claim;
         this.user = user;
         this.status = status;
-        this.createdAt = LocalDateTime.now();
     }
 
     // Getters and setters
@@ -58,7 +57,4 @@ public class ClaimChange {
 
     public ClaimStatus getStatus() { return status; }
     public void setStatus(ClaimStatus status) { this.status = status; }
-
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 }

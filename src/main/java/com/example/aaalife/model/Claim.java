@@ -1,14 +1,16 @@
 package com.example.aaalife.model;
 
 import jakarta.persistence.*;
+
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.data.annotation.CreatedDate;
+
 @Entity
 @Table(indexes = {
-    @Index(name = "idx_claim_policy", columnList = "policy_id"),
-    @Index(name = "idx_claim_status", columnList = "status"),
-    @Index(name = "idx_claim_due_date", columnList = "dueDate")
+    @Index(name = "idx_claim_policy", columnList = "policy_id")
 })
 public class Claim {
 
@@ -17,7 +19,7 @@ public class Claim {
     private Long id;
 
     @Column(nullable = false)
-    @GeneratedValue(strategy = GenerationType.TIMESTAMP)
+    @CreatedDate
     private Instant createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -1,11 +1,18 @@
 package com.example.aaalife.model;
 
 import jakarta.persistence.*;
+
+import java.time.Instant;
 import java.util.List;
+
+import org.springframework.data.annotation.CreatedDate;
 
 @Entity
 @Table(indexes = {
-    @Index(name = "idx_user_role", columnList = "role")
+    @Index(name = "idx_user_role", columnList = "role"),
+    @Index(name = "idx_user_username", columnList = "username")
+}, uniqueConstraints = {
+    @UniqueConstraint(name = "uk_user_username", columnNames = "username")
 })
 public class User {
 
@@ -14,7 +21,7 @@ public class User {
     private Long id;
 
     @Column(nullable = false)
-    @GeneratedValue(strategy = GenerationType.TIMESTAMP)
+    @CreatedDate
     private Instant createdAt;
 
     @Column(nullable = false)
@@ -22,12 +29,12 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role;
+    private Role role; // cleaner and less auditing issues if internal customers stay separate.
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserAccountAccess> accountAccesses;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = false)
     private List<ClaimChange> claimChanges;
 
     public User() {}

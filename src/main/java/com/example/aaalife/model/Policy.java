@@ -1,7 +1,11 @@
 package com.example.aaalife.model;
 
 import jakarta.persistence.*;
+
+import java.time.Instant;
 import java.util.List;
+
+import org.springframework.data.annotation.CreatedDate;
 
 @Entity
 @Table(indexes = {
@@ -15,7 +19,7 @@ public class Policy {
     private Long id;
 
     @Column(nullable = false)
-    @GeneratedValue(strategy = GenerationType.TIMESTAMP)
+    @CreatedDate
     private Instant createdAt;
 
     @Column(nullable = false, unique = true)

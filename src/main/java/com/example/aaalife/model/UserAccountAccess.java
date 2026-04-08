@@ -1,5 +1,9 @@
 package com.example.aaalife.model;
 
+import java.time.Instant;
+
+import org.springframework.data.annotation.CreatedDate;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -15,7 +19,7 @@ public class UserAccountAccess {
     private Long id;
 
     @Column(nullable = false)
-    @GeneratedValue(strategy = GenerationType.TIMESTAMP)
+    @CreatedDate
     private Instant createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)

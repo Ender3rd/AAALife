@@ -1,5 +1,9 @@
 package com.example.aaalife.model;
 
+import java.time.Instant;
+
+import org.springframework.data.annotation.CreatedDate;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -14,7 +18,7 @@ public class Note {
     private Long id;
 
     @Column(nullable = false)
-    @GeneratedValue(strategy = GenerationType.TIMESTAMP)
+    @CreatedDate
     private Instant createdAt;
 
     @Column(nullable = false)

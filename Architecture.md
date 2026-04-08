@@ -82,6 +82,7 @@ All have a creation time, ID.
     - File Location
     - Size
     - Hash
+    - Content (base64 encoded, only loaded when needed)
     - Parent (with type and identifier)
     - RelatesTo (with type and identifier)(Same as Parent if Parent is not a Note or Document)
  - Note
