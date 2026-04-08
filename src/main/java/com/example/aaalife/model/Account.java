@@ -14,6 +14,10 @@ public class Account {
     private Long id;
 
     @Column(nullable = false)
+    @GeneratedValue(strategy = GenerationType.TIMESTAMP)
+    private Instant createdAt;
+
+    @Column(nullable = false)
     private String name;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -28,6 +32,9 @@ public class Account {
     // Getters and setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
+
+    public Instant getCreatedAt() { return createdAt; }
+    public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }

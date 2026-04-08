@@ -15,6 +15,10 @@ public class ClaimChange {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
+    @GeneratedValue(strategy = GenerationType.TIMESTAMP)
+    private Instant createdAt;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "claim_id", nullable = false)
     private Claim claim;
@@ -42,6 +46,9 @@ public class ClaimChange {
     // Getters and setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
+
+    public Instant getCreatedAt() { return createdAt; }
+    public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
 
     public Claim getClaim() { return claim; }
     public void setClaim(Claim claim) { this.claim = claim; }

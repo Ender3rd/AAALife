@@ -14,6 +14,10 @@ public class Note {
     private Long id;
 
     @Column(nullable = false)
+    @GeneratedValue(strategy = GenerationType.TIMESTAMP)
+    private Instant createdAt;
+
+    @Column(nullable = false)
     private Long parentId;
 
     @Column(nullable = false)
@@ -41,6 +45,9 @@ public class Note {
     // Getters and setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
+
+    public Instant getCreatedAt() { return createdAt; }
+    public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
 
     public Long getParentId() { return parentId; }
     public void setParentId(Long parentId) { this.parentId = parentId; }

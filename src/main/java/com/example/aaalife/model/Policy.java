@@ -14,6 +14,10 @@ public class Policy {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
+    @GeneratedValue(strategy = GenerationType.TIMESTAMP)
+    private Instant createdAt;
+
     @Column(nullable = false, unique = true)
     private String publicId;
 
@@ -34,6 +38,9 @@ public class Policy {
     // Getters and setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
+
+    public Instant getCreatedAt() { return createdAt; }
+    public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
 
     public String getPublicId() { return publicId; }
     public void setPublicId(String publicId) { this.publicId = publicId; }
