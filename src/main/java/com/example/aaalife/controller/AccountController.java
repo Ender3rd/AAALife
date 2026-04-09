@@ -28,8 +28,11 @@ public class AccountController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // Not really needed, since the account will have the claims via policies, but to reduce the number of API calls and hide unnecessary data we provide this shortcut.
-    // No before/after since we hope that no single account will have so many claims that time slices or pagination will be needed.
+    // Not really needed, since the account will have the claims via policies, but
+    // to reduce the number of API calls and hide unnecessary data we provide this
+    // shortcut.
+    // No before/after since we hope that no single account will have so many claims
+    // that time slices or pagination will be needed.
     @GetMapping("/{id}/claims")
     public ResponseEntity<List<Claim>> getClaimsById(@PathVariable Long id) {
         return accountRepository.findById(id)

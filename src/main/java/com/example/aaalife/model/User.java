@@ -9,15 +9,13 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
-@Table(
-    indexes = {
+@Table(indexes = {
         @Index(name = "idx_user_role", columnList = "role"),
         @Index(name = "idx_user_username", columnList = "username")
-    },
-    uniqueConstraints = {
+}, uniqueConstraints = {
         @UniqueConstraint(name = "uk_user_username", columnNames = "username")
-    },
-    name = "users_table" // "user" is a reserved keyword in some databases, so we specify the table name explicitly to avoid issues.
+}, name = "users_table" // "user" is a reserved keyword in some databases, so we specify the table name
+                        // explicitly to avoid issues.
 )
 @EntityListeners(AuditingEntityListener.class)
 public class User {
@@ -37,13 +35,14 @@ public class User {
     @Column(nullable = false)
     private Role role; // cleaner and less auditing issues if internal customers stay separate.
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = false)
+    @OneToMany(mappedBy = "user", orphanRemoval = false)
     private List<ClaimChange> claimChanges;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = false)
+    @OneToMany(mappedBy = "user", orphanRemoval = false)
     private List<Claim> claims;
 
-    public User() {}
+    public User() {
+    }
 
     public User(String username, Role role) {
         this.username = username;
@@ -51,21 +50,51 @@ public class User {
     }
 
     // Getters and setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public Instant getCreatedAt() { return createdAt; }
-    public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getUsername() { return username; }
-    public void setUsername(String username) { this.username = username; }
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
 
-    public Role getRole() { return role; }
-    public void setRole(Role role) { this.role = role; }
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
 
-    public List<ClaimChange> getClaimChanges() { return claimChanges; }
-    public void setClaimChanges(List<ClaimChange> claimChanges) { this.claimChanges = claimChanges; }
+    public String getUsername() {
+        return username;
+    }
 
-    public List<Claim> getClaims() { return claims; }
-    public void setClaims(List<Claim> claims) { this.claims = claims; }
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public List<ClaimChange> getClaimChanges() {
+        return claimChanges;
+    }
+
+    public void setClaimChanges(List<ClaimChange> claimChanges) {
+        this.claimChanges = claimChanges;
+    }
+
+    public List<Claim> getClaims() {
+        return claims;
+    }
+
+    public void setClaims(List<Claim> claims) {
+        this.claims = claims;
+    }
 }

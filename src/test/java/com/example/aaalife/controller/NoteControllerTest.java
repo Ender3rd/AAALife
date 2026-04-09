@@ -34,6 +34,9 @@ class NoteControllerTest {
     @Test
     @WithUserDetails("customer")
     void testCreateNote() throws Exception {
+        // org.springframework.boot.logging.logback.LogbackLoggingSystem.get(getClass().getClassLoader())
+        // .setLogLevel("org.springframework.security",
+        // org.springframework.boot.logging.LogLevel.TRACE);
         Note note = new Note();
         note.setContent("Test note");
         note.setParentId(17l);

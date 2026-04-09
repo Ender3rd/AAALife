@@ -10,7 +10,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(indexes = {
-    @Index(name = "idx_claim_policy", columnList = "policy_id")
+        @Index(name = "idx_claim_policy", columnList = "policy_id")
 })
 @EntityListeners(AuditingEntityListener.class)
 public class Claim {
@@ -31,14 +31,15 @@ public class Claim {
     @JoinColumn(name = "policy_id", nullable = false, updatable = false)
     private Policy policy;
 
-    @OneToMany(mappedBy = "claim", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "claim", orphanRemoval = true)
     @OrderBy("createdAt DESC")
     private List<ClaimChange> claimChanges;
 
     @Column(nullable = false)
     private Instant incidentDate;
 
-    public Claim() {}
+    public Claim() {
+    }
 
     public Claim(Policy policy, User user) {
         this.policy = policy;
@@ -46,21 +47,51 @@ public class Claim {
     }
 
     // Getters and setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public Instant getCreatedAt() { return createdAt; }
-    public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public Policy getPolicy() { return policy; }
-    public void setPolicy(Policy policy) { this.policy = policy; }
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
 
-    public List<ClaimChange> getClaimChanges() { return claimChanges; }
-    public void setClaimChanges(List<ClaimChange> claimChanges) { this.claimChanges = claimChanges; }
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
 
-    public User getUser() { return user; }
-    public void setUser(User user) { this.user = user; }
+    public Policy getPolicy() {
+        return policy;
+    }
 
-    public Instant getIncidentDate() { return incidentDate; }
-    public void setIncidentDate(Instant incidentDate) { this.incidentDate = incidentDate; }
+    public void setPolicy(Policy policy) {
+        this.policy = policy;
+    }
+
+    public List<ClaimChange> getClaimChanges() {
+        return claimChanges;
+    }
+
+    public void setClaimChanges(List<ClaimChange> claimChanges) {
+        this.claimChanges = claimChanges;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Instant getIncidentDate() {
+        return incidentDate;
+    }
+
+    public void setIncidentDate(Instant incidentDate) {
+        this.incidentDate = incidentDate;
+    }
 }
