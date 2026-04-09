@@ -29,16 +29,9 @@ public class Claim {
     @JoinColumn(name = "policy_id", nullable = false, updatable = false)
     private Policy policy;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private ClaimStatus status;
-
     @OneToMany(mappedBy = "claim", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("createdAt DESC")
     private List<ClaimChange> claimChanges;
-
-    @Column(nullable = false)
-    private float amount;
 
     @Column(nullable = false)
     private Instant incidentDate;
@@ -48,7 +41,6 @@ public class Claim {
     public Claim(Policy policy, User user) {
         this.policy = policy;
         this.user = user;
-        this.status = ClaimStatus.Created; // initial status
     }
 
     // Getters and setters
@@ -61,17 +53,11 @@ public class Claim {
     public Policy getPolicy() { return policy; }
     public void setPolicy(Policy policy) { this.policy = policy; }
 
-    public ClaimStatus getStatus() { return status; }
-    public void setStatus(ClaimStatus status) { this.status = status; }
-
     public List<ClaimChange> getClaimChanges() { return claimChanges; }
     public void setClaimChanges(List<ClaimChange> claimChanges) { this.claimChanges = claimChanges; }
 
     public User getUser() { return user; }
     public void setUser(User user) { this.user = user; }
-
-    public float getAmount() { return amount; }
-    public void setAmount(float amount) { this.amount = amount; }
 
     public Instant getIncidentDate() { return incidentDate; }
     public void setIncidentDate(Instant incidentDate) { this.incidentDate = incidentDate; }

@@ -1,9 +1,10 @@
 # Compile and Run Instructions
+It is assumed that java, maven, and docker are installed, working, and in the PATH.
+
 ## Local Run
 `mvn spring-boot:run`
 
 ## Docker
-1. It is assumed that java, maven, and docker are installed, working, and in the PATH.
 2. Download/clone source files.
 3. Run `mvn clean install` to compile everything. There's no where to deploy to for this demo, so that goal does not work.
 4. Run `docker image pull registry.hub.docker.com/library/eclipse-temurin:26_35-jre-alpine` to retrieve the base image for the dockerfile
@@ -19,11 +20,11 @@
 # What is included
 - Auditing via log4j, other CoR integrations.
 - Almost all entries are immutable for auditing.
-- Claim creation and status updating.
+- Claim creation and status updating, with partial security.
 - Document upload and storage.
 - Note creation.
 - Notes and documents provided on nearly all objects (Account, Policy, User, Claim, Document, Note).
-- Integration points for auditing, document upload/retrieval, user authentication and authorization, ticketing systems.
+- Integration points for auditing, document upload/retrieval, user authentication and authorization, etc.
 
 # What is omitted
 - Account and Policy are stub objects, for other non-claim stories to flesh out.
@@ -37,6 +38,5 @@
 - Terraform and other deployment automation.
 - A workflow system. Integration with Jira or similar will be more effective.
 - Data Cleanup.
-- Customer access within their account is unlimited. I.e., no restricted/hidden policies.
-- Markdown, asciidoc, etc. for Notes. Should be 99% future proof.
 - Limiting visibility of objects by user access.
+- Most role-based limitations

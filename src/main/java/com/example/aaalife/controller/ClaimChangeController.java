@@ -1,10 +1,11 @@
 package com.example.aaalife.controller;
 
 import com.example.aaalife.model.ClaimChange;
+import com.example.aaalife.model.ClaimStatus;
+import com.example.aaalife.model.Role;
 import com.example.aaalife.model.User;
 import com.example.aaalife.repository.ClaimChangeRepository;
 import com.example.aaalife.repository.UserRepository;
-import com.example.aaalife.service.ClaimChangeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,13 +15,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/claim-changes")
 public class ClaimChangeController {
 
-    private final ClaimChangeService claimChangeService;
     private final ClaimChangeRepository claimChangeRepository;
     private final UserRepository userRepository;
 
-    public ClaimChangeController(ClaimChangeService claimChangeService, ClaimChangeRepository claimChangeRepository, UserRepository userRepository) {
-        this.userRepository = userRepository;  
-        this.claimChangeService = claimChangeService;
+    public ClaimChangeController(ClaimChangeRepository claimChangeRepository, UserRepository userRepository) {
+        this.userRepository = userRepository;
         this.claimChangeRepository = claimChangeRepository;
     }
 
@@ -43,7 +42,11 @@ public class ClaimChangeController {
         }
         claimChange.setUser(user);
         // TODO create a very careful validation of what roles are allowed to change the status in what ways.
-        ClaimChange saved = claimChangeService.save(claimChange);
+        // for now, hack it.
+        if (ClaimStatus.Approved.equals(claimChange.getStatus()) && !Role.Adjuster.equals(user.getRole())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        ClaimChange saved = claimChangeRepository.save(claimChange);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 }

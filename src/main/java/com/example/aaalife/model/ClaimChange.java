@@ -35,6 +35,9 @@ public class ClaimChange {
     @Column(nullable = false, updatable = false)
     private ClaimStatus status;
 
+    @Column(nullable = true, updatable = false) // optional field to record the claim amount at the time of the change, useful for tracking changes in claim amounts over time
+    private float amount;
+
     public ClaimChange() {}
 
     public ClaimChange(Claim claim, User user, ClaimStatus status) {

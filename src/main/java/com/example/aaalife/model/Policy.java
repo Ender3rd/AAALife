@@ -13,6 +13,8 @@ import org.springframework.data.annotation.CreatedDate;
     @Index(name = "idx_policy_account", columnList = "account_id")
 })
 public class Policy {
+    // TODO policy limits (including verification of claims against limits)
+    // TODO a way to model expired/cancelled policies from lack of payments, etc.
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
