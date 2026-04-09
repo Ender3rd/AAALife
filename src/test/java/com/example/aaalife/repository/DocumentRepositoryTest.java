@@ -3,7 +3,7 @@ package com.example.aaalife.repository;
 import com.example.aaalife.model.Document;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -16,8 +16,11 @@ class DocumentRepositoryTest {
     @Test
     void testSaveAndFindById() {
         Document document = new Document();
-        document.setName("Test Document");
-        document.setContent("Test content".getBytes());
+        document.setFileHash("some fake hash");
+        document.setFileLocation("/opt/ontap/docs/claim/17/foo.pdf");
+        document.setFileSize(12l);
+        document.setParentId(17l);
+        document.setParentType("Claim");
         Document saved = documentRepository.save(document);
 
         assertThat(saved.getId()).isNotNull();

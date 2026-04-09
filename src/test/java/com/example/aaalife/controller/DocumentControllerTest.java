@@ -4,9 +4,9 @@ import com.example.aaalife.model.Document;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.jpa.test.autoconfigure.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -29,8 +29,7 @@ class DocumentControllerTest {
     @Test
     void testCreateDocument() throws Exception {
         Document document = new Document();
-        document.setName("Test Document");
-        document.setContent("Test content".getBytes());
+        // TODO proper testing
 
         mockMvc.perform(post("/api/documents")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -41,8 +40,7 @@ class DocumentControllerTest {
     @Test
     void testGetById() throws Exception {
         Document document = new Document();
-        document.setName("Test Document");
-        document.setContent("Test content".getBytes());
+        // TODO proper testing
         Document saved = entityManager.persistAndFlush(document);
 
         mockMvc.perform(get("/api/documents/{id}", saved.getId()))

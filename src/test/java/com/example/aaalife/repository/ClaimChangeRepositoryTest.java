@@ -3,7 +3,7 @@ package com.example.aaalife.repository;
 import com.example.aaalife.model.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -44,7 +44,7 @@ class ClaimChangeRepositoryTest {
         claim.setIncidentDate(java.time.Instant.now());
         claim = claimRepository.save(claim);
 
-        ClaimChange claimChange = new ClaimChange(claim, user, ClaimStatus.Submitted);
+        ClaimChange claimChange = new ClaimChange(claim, user, ClaimStatus.Reviewable);
         ClaimChange saved = claimChangeRepository.save(claimChange);
 
         assertThat(saved.getId()).isNotNull();
