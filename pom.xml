@@ -2,20 +2,28 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <name>aaalife</name>
+    <description>RESTful Spring Boot service with database backend to act as a claims management miniservice</description>
+
     <groupId>com.example</groupId>
     <artifactId>aaalife</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>aaalife</name>
-    <description>RESTful Spring Boot service with database backend</description>
-
     <properties>
         <java.version>21</java.version>
-        <spring.boot.version>3.2.6</spring.boot.version>
+        <spring.boot.version>4.0.5</spring.boot.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
     </properties>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>4.0.5</version>
+        <relativePath></relativePath>
+    </parent>
+
 
     <dependencyManagement>
         <dependencies>
@@ -65,12 +73,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
+                    <mainClass>com.example.aaalife.AaaLifeApplication</mainClass>
                 </configuration>
             </plugin>
         </plugins>
