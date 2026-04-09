@@ -44,7 +44,7 @@
 
 ## Architectural Components
 At a high level, this is a modified 3-level application design. It adds various filters (caching, AWF, etc.) as a further stage protecting the traditional 3.
-![A simplified Architectural Diagram](./images/4-level%20diagram.svg)
+![A simplified Architectural Diagram](./images/4-level%20diagram.png)
 
 ### Filters
 These components improve performance and security by filtering out traffic to the web services.
@@ -143,7 +143,7 @@ All objects have a creation time and ID. All can be commented upon or have relev
     - Reviewable
     - Denied
     - Approved
-![Visual version of the data above](./images/Models.svg)
+![Visual version of the data above](./images/Models.png)
 
  ### Object Relationships
  - 1 Account : Many Policies
