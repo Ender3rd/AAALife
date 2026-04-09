@@ -29,8 +29,10 @@ public class AaaLifeApplication {
     @Bean
     InitializingBean sendDatabase() {
         return () -> {
-            userRepository.save(new User("customer", Role.Customer));
-            userRepository.save(new User("adjuster", Role.Adjuster));
+            if (userRepository.count() == 0) {
+                userRepository.save(new User("customer", Role.Customer));
+                userRepository.save(new User("adjuster", Role.Adjuster));
+            }
         };
     }
 }
