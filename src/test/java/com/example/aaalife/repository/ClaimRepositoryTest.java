@@ -45,8 +45,8 @@ class ClaimRepositoryTest {
         policy = policyRepository.save(policy);
 
         Instant incidentDate = Instant.parse("2023-01-01T00:00:00Z");
-        Instant since = Instant.parse("2023-01-01T00:00:00Z");
-        Instant before = Instant.parse("2023-01-02T00:00:00Z");
+        Instant since = Instant.parse("2022-01-01T00:00:00Z");
+        Instant before = Instant.parse("2024-01-02T00:00:00Z");
 
         // Create 5 claims with same policy and incidentDate
         for (int i = 0; i < 5; i++) {
