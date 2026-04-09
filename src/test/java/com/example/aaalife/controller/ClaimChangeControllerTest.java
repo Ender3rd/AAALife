@@ -9,7 +9,7 @@ import org.springframework.boot.jpa.test.autoconfigure.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +32,7 @@ class ClaimChangeControllerTest {
     private TestEntityManager entityManager;
 
     @Test
-    @WithMockUser(username = "testuser")
+    @WithUserDetails("customer")
     void testCreateClaimChange() throws Exception {
         // Create dependencies
         Account account = new Account();
@@ -59,7 +59,10 @@ class ClaimChangeControllerTest {
                 .andExpect(status().isCreated());
     }
 
+    // TODO test limits on who can approve claims.
+
     @Test
+    @WithUserDetails("customer")
     void testGetById() throws Exception {
         // Create a claim change
         Account account = new Account();

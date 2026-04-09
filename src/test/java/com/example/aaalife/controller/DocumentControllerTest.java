@@ -9,6 +9,7 @@ import org.springframework.boot.jpa.test.autoconfigure.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +32,7 @@ class DocumentControllerTest {
     private TestEntityManager entityManager;
 
     @Test
+    @WithUserDetails("customer")
     void testCreateDocument() throws Exception {
         Document document = new Document();
         document.setFileHash("some fake hash");
@@ -48,6 +50,7 @@ class DocumentControllerTest {
     }
 
     @Test
+    @WithUserDetails("customer")
     void testGetById() throws Exception {
         Document document = new Document();
         document.setFileHash("some fake hash");
@@ -61,6 +64,6 @@ class DocumentControllerTest {
 
         mockMvc.perform(get("/api/documents/{id}", saved.getId()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Test Document"));
+                .andExpect(jsonPath("$.fileLocation").value(document.getFileLocation()));
     }
 }

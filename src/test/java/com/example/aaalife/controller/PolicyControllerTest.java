@@ -10,6 +10,7 @@ import org.springframework.boot.jpa.test.autoconfigure.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +33,7 @@ class PolicyControllerTest {
     private TestEntityManager entityManager;
 
     @Test
+    @WithUserDetails("customer")
     void testCreatePolicy() throws Exception {
         Account account = new Account();
         account.setName("Test Account");
@@ -46,6 +48,7 @@ class PolicyControllerTest {
     }
 
     @Test
+    @WithUserDetails("customer")
     void testGetById() throws Exception {
         Account account = new Account();
         account.setName("Test Account");
@@ -60,6 +63,7 @@ class PolicyControllerTest {
     }
 
     @Test
+    @WithUserDetails("customer")
     void testGetAll() throws Exception {
         mockMvc.perform(get("/api/policies"))
                 .andExpect(status().isOk());

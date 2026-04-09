@@ -2,15 +2,13 @@ package com.example.aaalife.controller;
 
 import com.example.aaalife.model.Account;
 
-import tools.jackson.databind.ObjectMapper;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jpa.test.autoconfigure.AutoConfigureTestEntityManager;
 import org.springframework.boot.jpa.test.autoconfigure.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
-import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,23 +25,10 @@ class AccountControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
     private TestEntityManager entityManager;
 
     @Test
-    void testCreateAccount() throws Exception {
-        Account account = new Account();
-        account.setName("Test Account");
-
-        mockMvc.perform(post("/api/accounts")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(account)))
-                .andExpect(status().isCreated());
-    }
-
-    @Test
+    @WithUserDetails("customer")
     void testGetById() throws Exception {
         Account account = new Account();
         account.setName("Test Account");

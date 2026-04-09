@@ -8,6 +8,7 @@ import org.springframework.boot.jpa.test.autoconfigure.AutoConfigureTestEntityMa
 import org.springframework.boot.jpa.test.autoconfigure.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +28,7 @@ class UserControllerTest {
     private TestEntityManager entityManager;
 
     @Test
+    @WithUserDetails("customer")
     void testGetById() throws Exception {
         User user = new User();
         user.setUsername("testuser");
