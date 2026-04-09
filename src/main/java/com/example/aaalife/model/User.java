@@ -8,12 +8,16 @@ import java.util.List;
 import org.springframework.data.annotation.CreatedDate;
 
 @Entity
-@Table(indexes = {
-    @Index(name = "idx_user_role", columnList = "role"),
-    @Index(name = "idx_user_username", columnList = "username")
-}, uniqueConstraints = {
-    @UniqueConstraint(name = "uk_user_username", columnNames = "username")
-})
+@Table(
+    indexes = {
+        @Index(name = "idx_user_role", columnList = "role"),
+        @Index(name = "idx_user_username", columnList = "username")
+    },
+    uniqueConstraints = {
+        @UniqueConstraint(name = "uk_user_username", columnNames = "username")
+    },
+    name = "users_table" // "user" is a reserved keyword in some databases, so we specify the table name explicitly to avoid issues.
+)
 public class User {
 
     @Id
@@ -36,6 +40,9 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = false)
     private List<ClaimChange> claimChanges;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = false)
+    private List<Claim> claims;
 
     public User() {}
 
@@ -62,4 +69,7 @@ public class User {
 
     public List<ClaimChange> getClaimChanges() { return claimChanges; }
     public void setClaimChanges(List<ClaimChange> claimChanges) { this.claimChanges = claimChanges; }
+
+    public List<Claim> getClaims() { return claims; }
+    public void setClaims(List<Claim> claims) { this.claims = claims; }
 }

@@ -47,7 +47,7 @@ public class SecurityConfig {
 
             @Override
             public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                User user = userRepository.findByName(username)
+                User user = userRepository.findByUsername(username)
                     .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
                 return toDetails(user);
             }
@@ -64,7 +64,7 @@ public class SecurityConfig {
 
             @Override
             public void deleteUser(String username) {
-                userRepository.delete(userRepository.findByName(username).orElseThrow(() -> new UsernameNotFoundException("User not found: " + username)));
+                userRepository.delete(userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found: " + username)));
             }
 
             @Override
@@ -74,7 +74,7 @@ public class SecurityConfig {
 
             @Override
             public boolean userExists(String username) {
-                return userRepository.findByName(username).isPresent();
+                return userRepository.findByUsername(username).isPresent();
             }
             
         };

@@ -30,3 +30,4 @@ Dedicated search methods have relevant indices created for them.
 - Data Cleanup.
 - Customer access within their account is unlimited. I.e., no restricted/hidden policies.
 - Markdown, asciidoc, etc. for Notes. Should be 99% future proof.
+- Limiting visibility of objects by user access.
