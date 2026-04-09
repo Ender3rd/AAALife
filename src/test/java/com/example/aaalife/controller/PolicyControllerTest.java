@@ -2,7 +2,7 @@ package com.example.aaalife.controller;
 
 import com.example.aaalife.model.Account;
 import com.example.aaalife.model.Policy;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jpa.test.autoconfigure.TestEntityManager;
