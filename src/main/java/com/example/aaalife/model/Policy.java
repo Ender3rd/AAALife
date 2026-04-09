@@ -6,12 +6,14 @@ import java.time.Instant;
 import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(indexes = {
     @Index(name = "idx_policy_public_id", columnList = "publicId"),
     @Index(name = "idx_policy_account", columnList = "account_id")
 })
+@EntityListeners(AuditingEntityListener.class)
 public class Policy {
     // TODO policy limits (including verification of claims against limits)
     // TODO a way to model expired/cancelled policies from lack of payments, etc.

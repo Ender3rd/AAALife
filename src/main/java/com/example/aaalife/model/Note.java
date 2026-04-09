@@ -3,6 +3,7 @@ package com.example.aaalife.model;
 import java.time.Instant;
 
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.*;
 
@@ -11,6 +12,7 @@ import jakarta.persistence.*;
     @Index(name = "idx_note_parent", columnList = "parentId, parentType"),
     @Index(name = "idx_note_relates_to", columnList = "relatesToId, relatesToType")
 })
+@EntityListeners(AuditingEntityListener.class)
 public class Note {
 
     @Id

@@ -6,11 +6,13 @@ import java.time.Instant;
 import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(indexes = {
     @Index(name = "idx_account_name", columnList = "name")
 })
+@EntityListeners(AuditingEntityListener.class)
 public class Account {
 
     @Id

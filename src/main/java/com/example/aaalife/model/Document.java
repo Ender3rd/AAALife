@@ -4,6 +4,7 @@ import java.time.Instant;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.example.aaalife.service.ContentService;
 
@@ -14,6 +15,7 @@ import jakarta.persistence.*;
     @Index(name = "idx_document_parent", columnList = "parentId, parentType"),
     @Index(name = "idx_document_relates_to", columnList = "relatesToId, relatesToType")
 })
+@EntityListeners(AuditingEntityListener.class)
 public class Document {
 
     @Autowired

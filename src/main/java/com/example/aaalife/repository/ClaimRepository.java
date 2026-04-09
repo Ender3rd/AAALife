@@ -12,6 +12,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ClaimRepository extends JpaRepository<Claim, Long> {
-    @Query("SELECT c FROM Claim c WHERE c.createdAt >= :since AND c.createdAt < :before GROUP BY c.policy, FLOOR(LOG(c.amount, 10)) HAVING COUNT(c) > 4")
+    @Query("SELECT c FROM Claim c WHERE c.createdAt >= :since AND c.createdAt < :before GROUP BY c.policy, c.incidentDate HAVING COUNT(c) > 4")
     Optional<List<Claim>> findDuplicatesBetween(Instant sinceTimestamp, Instant beforeTimestamp);
 }

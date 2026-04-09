@@ -6,6 +6,7 @@ import java.time.Instant;
 import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(
@@ -18,6 +19,7 @@ import org.springframework.data.annotation.CreatedDate;
     },
     name = "users_table" // "user" is a reserved keyword in some databases, so we specify the table name explicitly to avoid issues.
 )
+@EntityListeners(AuditingEntityListener.class)
 public class User {
 
     @Id

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.time.Instant;
 
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 // immutable record of a change to a claim, used for auditing and tracking claim history. Each time a claim is created or its status changes, a new ClaimChange record is created.
 @Entity
@@ -14,6 +15,7 @@ import org.springframework.data.annotation.CreatedDate;
     @Index(name = "idx_claim_change_created_at", columnList = "createdAt"),
     @Index(name = "idx_claim_change_status_by_time", columnList = "createdAt, status")
 })
+@EntityListeners(AuditingEntityListener.class)
 public class ClaimChange {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -6,11 +6,13 @@ import java.time.Instant;
 import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(indexes = {
     @Index(name = "idx_claim_policy", columnList = "policy_id")
 })
+@EntityListeners(AuditingEntityListener.class)
 public class Claim {
 
     @Id
