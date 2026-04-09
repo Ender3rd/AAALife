@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public abstract class RateLimiter implements HandlerInterceptor {
 
     // All the atomics and conncurrents are to make this thread safe while keeping locks for the shortest time possible. In a real application we would probably offload this to an HTTP proxy or a distributed cache.
+    @SuppressWarnings("unchecked")
     private static final AtomicReference<ConcurrentHashMap<String, AtomicInteger>>[] userAttempts = new AtomicReference[4];
     private static final AtomicInteger DEFAULT_ZERO = new AtomicInteger(0); // DO NOT MUTATE THIS OR LET IT INTO THE MAPS TO BE MUTATED
     private static final int MAX_RATE = 25; // max attempts per time window. In a real application, this would be configurable.
