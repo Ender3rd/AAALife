@@ -33,7 +33,13 @@ class DocumentControllerTest {
     @Test
     void testCreateDocument() throws Exception {
         Document document = new Document();
-        // TODO proper testing
+        document.setFileHash("some fake hash");
+        document.setFileLocation("/opt/ontap/docs/claim/17/foo.pdf");
+        document.setFileSize(12l);
+        document.setParentId(17l);
+        document.setParentType("Claim");
+        document.setRelatesToId(document.getParentId());
+        document.setRelatesToType(document.getParentType());
 
         mockMvc.perform(post("/api/documents")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -44,7 +50,13 @@ class DocumentControllerTest {
     @Test
     void testGetById() throws Exception {
         Document document = new Document();
-        // TODO proper testing
+        document.setFileHash("some fake hash");
+        document.setFileLocation("/opt/ontap/docs/claim/17/foo.pdf");
+        document.setFileSize(12l);
+        document.setParentId(17l);
+        document.setParentType("Claim");
+        document.setRelatesToId(document.getParentId());
+        document.setRelatesToType(document.getParentType());
         Document saved = entityManager.persistAndFlush(document);
 
         mockMvc.perform(get("/api/documents/{id}", saved.getId()))

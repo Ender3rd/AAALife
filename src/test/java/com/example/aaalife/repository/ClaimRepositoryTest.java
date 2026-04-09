@@ -46,7 +46,6 @@ class ClaimRepositoryTest {
 
         Instant incidentDate = Instant.parse("2023-01-01T00:00:00Z");
         Instant since = Instant.parse("2022-01-01T00:00:00Z");
-        Instant before = Instant.parse("2024-01-02T00:00:00Z");
 
         // Create 5 claims with same policy and incidentDate
         for (int i = 0; i < 5; i++) {
@@ -55,11 +54,13 @@ class ClaimRepositoryTest {
             claim.setCreatedAt(since.plusSeconds(i * 60)); // Different times within range
             claimRepository.save(claim);
         }
+        claimRepository.flush();
+
+        assertThat(claimRepository.count()).isEqualTo(5);
 
         // Test the query
-        Optional<List<Claim>> duplicates = claimRepository.findDuplicatesBetween(since, before);
-        assertThat(duplicates).isPresent();
-        assertThat(duplicates.get()).hasSize(5);
+        List<Claim> duplicates = claimRepository.findDuplicatesBetween(since, since.plusSeconds(1000 * 60));
+        assertThat(duplicates).hasSize(5);
     }
 
     @Test
@@ -89,8 +90,7 @@ class ClaimRepositoryTest {
             claimRepository.save(claim);
         }
 
-        Optional<List<Claim>> duplicates = claimRepository.findDuplicatesBetween(since, before);
-        assertThat(duplicates).isPresent();
-        assertThat(duplicates.get()).isEmpty();
+        List<Claim> duplicates = claimRepository.findDuplicatesBetween(since, before);
+        assertThat(duplicates).isEmpty();
     }
 }

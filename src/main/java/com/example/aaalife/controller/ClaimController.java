@@ -59,9 +59,8 @@ public class ClaimController {
     public ResponseEntity<List<Claim>> getDuplicatesSince(@PathVariable String since, @PathVariable String before) {
         Instant sinceTimestamp = Instant.parse(since);
         Instant beforeTimestamp = Instant.parse(before);
-        return claimRepository.findDuplicatesBetween(sinceTimestamp, beforeTimestamp)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        List<Claim> duplicates = claimRepository.findDuplicatesBetween(sinceTimestamp, beforeTimestamp);
+        return duplicates.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(duplicates);
     }
 
 }

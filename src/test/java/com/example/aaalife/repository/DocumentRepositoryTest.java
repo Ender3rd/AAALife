@@ -21,6 +21,8 @@ class DocumentRepositoryTest {
         document.setFileSize(12l);
         document.setParentId(17l);
         document.setParentType("Claim");
+        document.setRelatesToId(document.getParentId());
+        document.setRelatesToType(document.getParentType());
         Document saved = documentRepository.save(document);
 
         assertThat(saved.getId()).isNotNull();

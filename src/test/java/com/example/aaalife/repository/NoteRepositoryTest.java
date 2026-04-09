@@ -17,6 +17,10 @@ class NoteRepositoryTest {
     void testSaveAndFindById() {
         Note note = new Note();
         note.setContent("Test note");
+        note.setParentId(17l);
+        note.setParentType("Claim");
+        note.setRelatesToId(note.getParentId());
+        note.setRelatesToType(note.getParentType());
         Note saved = noteRepository.save(note);
 
         assertThat(saved.getId()).isNotNull();

@@ -34,6 +34,10 @@ class NoteControllerTest {
     void testCreateNote() throws Exception {
         Note note = new Note();
         note.setContent("Test note");
+        note.setParentId(17l);
+        note.setParentType("Claim");
+        note.setRelatesToId(note.getParentId());
+        note.setRelatesToType(note.getParentType());
 
         mockMvc.perform(post("/api/notes")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -45,6 +49,10 @@ class NoteControllerTest {
     void testGetById() throws Exception {
         Note note = new Note();
         note.setContent("Test note");
+        note.setParentId(17l);
+        note.setParentType("Claim");
+        note.setRelatesToId(note.getParentId());
+        note.setRelatesToType(note.getParentType());
         Note saved = entityManager.persistAndFlush(note);
 
         mockMvc.perform(get("/api/notes/{id}", saved.getId()))
