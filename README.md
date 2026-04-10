@@ -1,3 +1,6 @@
+# What is this?
+This is a coding assessment which I am turning into a portfolio piece. It represents what I can do at a PoC level of work. It is not intended as a demonstration of what I can deliver for finished code. See my [architecture documentation](./Documentation/Architecture.md) for ideas on what a production system would look like.
+
 # Compile and Run Instructions
 It is assumed that java, maven, and docker are installed, working, and in the PATH.
 
@@ -16,7 +19,7 @@ It is assumed that java, maven, and docker are installed, working, and in the PA
 - Dedicated search methods are provided to navigate more quickly for what we anticipate to be common use cases. Analytics can be used to update our expectations over time.
 - Most dedicated methods will have a start date. Later an end date. Again, to improve scale.
 - Dedicated search methods have relevant indices created for them.
- 
+
 # What is included
 - Auditing via log4j, other CoR integrations.
 - Almost all entries are immutable for auditing.
@@ -40,3 +43,6 @@ It is assumed that java, maven, and docker are installed, working, and in the PA
 - Data Cleanup.
 - Limiting visibility of objects by user access.
 - Most role-based limitations
+- Strict MVC compliance. This code does not have, or expect to need, multiple views of its data. Adding a second view would be a significant effort and refactoring the controllers into controller/service pairs would probably not be a large increase in scope.
+- Separation between database and API objects. Worth doing eventually, but until the code is released and attracts significant customer adoption the two can safely vary in lockstep. Once backwards compatability, especially downtime-free backwards compatability, become an issue
+then the effort to have the DB and API objects vary independenly will be justified.
