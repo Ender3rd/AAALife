@@ -1,6 +1,7 @@
 package com.example.aaalife.controller;
 
 import com.example.aaalife.model.*;
+import com.example.aaalife.repository.UserRepository;
 import tools.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,18 +32,18 @@ class ClaimChangeControllerTest {
     @Autowired
     private TestEntityManager entityManager;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Test
     @WithUserDetails("customer")
     void testCreateClaimChange() throws Exception {
+        User user = userRepository.findByUsername("customer").orElseThrow();
+
         // Create dependencies
         Account account = new Account();
         account.setName("Test Account");
         account = entityManager.persistAndFlush(account);
-
-        User user = new User();
-        user.setUsername("testuser");
-        user.setRole(Role.Adjuster);
-        user = entityManager.persistAndFlush(user);
 
         Policy policy = new Policy("POL123", account);
         policy = entityManager.persistAndFlush(policy);

@@ -7,14 +7,15 @@ import java.time.Instant;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-// immutable record of a change to a claim, used for auditing and tracking claim history. Each time a claim is created or its status changes, a new ClaimChange record is created.
+/*
+ * immutable record of a change to a claim, used for auditing and tracking claim history. Each time
+ * a claim is created or its status changes, a new ClaimChange record is created.
+ */
 @Entity
-@Table(indexes = {
-    @Index(name = "idx_claim_change_claim", columnList = "claim_id"),
-    @Index(name = "idx_claim_change_user", columnList = "user_id"),
-    @Index(name = "idx_claim_change_created_at", columnList = "createdAt"),
-    @Index(name = "idx_claim_change_status_by_time", columnList = "createdAt, status")
-})
+@Table(indexes = { @Index(name = "idx_claim_change_claim", columnList = "claim_id"),
+        @Index(name = "idx_claim_change_user", columnList = "user_id"),
+        @Index(name = "idx_claim_change_created_at", columnList = "createdAt"),
+        @Index(name = "idx_claim_change_status_by_time", columnList = "createdAt, status") })
 @EntityListeners(AuditingEntityListener.class)
 public class ClaimChange {
     @Id
@@ -37,10 +38,16 @@ public class ClaimChange {
     @Column(nullable = false, updatable = false)
     private ClaimStatus status;
 
-    @Column(nullable = true, updatable = false) // optional field to record the claim amount at the time of the change, useful for tracking changes in claim amounts over time
+    /*
+     * optional field to record the claim amount at the time of the change, useful
+     * for tracking
+     * changes in claim amounts over time
+     */
+    @Column(nullable = true, updatable = false)
     private float amount;
 
-    public ClaimChange() {}
+    public ClaimChange() {
+    }
 
     public ClaimChange(Claim claim, User user, ClaimStatus status) {
         this.claim = claim;
@@ -49,18 +56,43 @@ public class ClaimChange {
     }
 
     // Getters and setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public Instant getCreatedAt() { return createdAt; }
-    public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public Claim getClaim() { return claim; }
-    public void setClaim(Claim claim) { this.claim = claim; }
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
 
-    public User getUser() { return user; }
-    public void setUser(User user) { this.user = user; }
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
 
-    public ClaimStatus getStatus() { return status; }
-    public void setStatus(ClaimStatus status) { this.status = status; }
+    public Claim getClaim() {
+        return claim;
+    }
+
+    public void setClaim(Claim claim) {
+        this.claim = claim;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public ClaimStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ClaimStatus status) {
+        this.status = status;
+    }
 }

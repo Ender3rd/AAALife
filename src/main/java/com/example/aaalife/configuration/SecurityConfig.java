@@ -15,7 +15,7 @@ import com.example.aaalife.model.User;
 import com.example.aaalife.repository.UserRepository;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = false)
 @EnableMethodSecurity
 public class SecurityConfig {
 
@@ -23,14 +23,20 @@ public class SecurityConfig {
     private UserRepository userRepository;
 
     // TODO - Implement proper authentication and authorization logic
+    @SuppressWarnings("unused")
     @Bean
     public SecurityFilterChain securityFilterChain(
-            org.springframework.security.config.annotation.web.builders.HttpSecurity http) throws Exception {
-        http
-                .csrf((csrf) -> csrf.ignoringRequestMatchers("/api/**"))
-                .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/api/**").authenticated()
-                        .anyRequest().permitAll())
+            org.springframework.security.config.annotation.web.builders.HttpSecurity http)
+            throws Exception {
+        // security-disabling hacks here for the demo.
+        if (false) {
+            org.springframework.boot.logging.logback.LogbackLoggingSystem
+                    .get(getClass().getClassLoader()).setLogLevel("org.springframework.security",
+                            org.springframework.boot.logging.LogLevel.TRACE);
+        }
+        http.csrf((csrf) -> csrf.ignoringRequestMatchers("/api/**"))
+                .authorizeHttpRequests((requests) -> requests.requestMatchers("/api/**")
+                        .authenticated().anyRequest().permitAll())
                 .httpBasic(Customizer.withDefaults());
         return http.build();
     }
@@ -39,16 +45,17 @@ public class SecurityConfig {
     UserDetailsManager users() {
         return new UserDetailsManager() {
             private UserDetails toDetails(User user) {
-                return org.springframework.security.core.userdetails.User.withUsername(user.getUsername())
-                        .password("") // no password for demonstration purposes
-                        .authorities(user.getRole().name())
-                        .build();
+                return org.springframework.security.core.userdetails.User
+                        .withUsername(user.getUsername()).password("") // no password for
+                                                                       // demonstration purposes
+                        .authorities(user.getRole().name()).build();
             }
 
             @Override
-            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                User user = userRepository.findByUsername(username)
-                        .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+            public UserDetails loadUserByUsername(String username)
+                    throws UsernameNotFoundException {
+                User user = userRepository.findByUsername(username).orElseThrow(
+                        () -> new UsernameNotFoundException("User not found: " + username));
                 return toDetails(user);
             }
 
@@ -66,8 +73,8 @@ public class SecurityConfig {
 
             @Override
             public void deleteUser(String username) {
-                userRepository.delete(userRepository.findByUsername(username)
-                        .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username)));
+                userRepository.delete(userRepository.findByUsername(username).orElseThrow(
+                        () -> new UsernameNotFoundException("User not found: " + username)));
             }
 
             @Override

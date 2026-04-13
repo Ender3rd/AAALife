@@ -8,6 +8,8 @@ import java.util.List;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(indexes = {
         @Index(name = "idx_user_role", columnList = "role"),
@@ -35,10 +37,12 @@ public class User {
     @Column(nullable = false)
     private Role role; // cleaner and less auditing issues if internal customers stay separate.
 
-    @OneToMany(mappedBy = "user", orphanRemoval = false)
+    @OneToMany(mappedBy = "user", orphanRemoval = false, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<ClaimChange> claimChanges;
 
-    @OneToMany(mappedBy = "user", orphanRemoval = false)
+    @OneToMany(mappedBy = "user", orphanRemoval = false, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Claim> claims;
 
     public User() {
