@@ -7,6 +7,10 @@ import java.time.Instant;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JacksonInject;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.OptBoolean;
+
 /*
  * immutable record of a change to a claim, used for auditing and tracking claim history. Each time
  * a claim is created or its status changes, a new ClaimChange record is created.
@@ -19,6 +23,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 public class ClaimChange {
     @Id
+    @JacksonInject(optional = OptBoolean.TRUE)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -28,10 +33,12 @@ public class ClaimChange {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "claim_id", nullable = false, updatable = false)
+    @JsonBackReference(value = "claim-claimChanges")
     private Claim claim;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, updatable = false)
+    @JsonBackReference(value = "user-claimChanges")
     private User user;
 
     @Enumerated(EnumType.STRING)

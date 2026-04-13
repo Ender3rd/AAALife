@@ -7,13 +7,15 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.example.aaalife.service.ContentService;
+import com.fasterxml.jackson.annotation.JacksonInject;
+import com.fasterxml.jackson.annotation.OptBoolean;
 
 import jakarta.persistence.*;
 
 @Entity
 @Table(indexes = {
-    @Index(name = "idx_document_parent", columnList = "parentId, parentType"),
-    @Index(name = "idx_document_relates_to", columnList = "relatesToId, relatesToType")
+        @Index(name = "idx_document_parent", columnList = "parentId, parentType"),
+        @Index(name = "idx_document_relates_to", columnList = "relatesToId, relatesToType")
 })
 @EntityListeners(AuditingEntityListener.class)
 public class Document {
@@ -22,6 +24,7 @@ public class Document {
     public static ContentService contentService;
 
     @Id
+    @JacksonInject(optional = OptBoolean.TRUE)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -50,9 +53,11 @@ public class Document {
     @Column(nullable = false, updatable = false)
     private String fileHash;
 
-    public Document() {}
+    public Document() {
+    }
 
-    public Document(Long parentId, String parentType, Long relatesToId, String relatesToType, Long fileSize, String fileLocation, String fileHash) {
+    public Document(Long parentId, String parentType, Long relatesToId, String relatesToType, Long fileSize,
+            String fileLocation, String fileHash) {
         this.parentId = parentId;
         this.parentType = parentType;
         this.relatesToId = relatesToId;
@@ -63,32 +68,77 @@ public class Document {
     }
 
     // Getters and setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public Instant getCreatedAt() { return createdAt; }
-    public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public Long getParentId() { return parentId; }
-    public void setParentId(Long parentId) { this.parentId = parentId; }
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
 
-    public String getParentType() { return parentType; }
-    public void setParentType(String parentType) { this.parentType = parentType; }
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
 
-    public Long getRelatesToId() { return relatesToId; }
-    public void setRelatesToId(Long relatesToId) { this.relatesToId = relatesToId; }
+    public Long getParentId() {
+        return parentId;
+    }
 
-    public String getRelatesToType() { return relatesToType; }
-    public void setRelatesToType(String relatesToType) { this.relatesToType = relatesToType; }
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
+    }
 
-    public Long getFileSize() { return fileSize; }
-    public void setFileSize(Long fileSize) { this.fileSize = fileSize; }
+    public String getParentType() {
+        return parentType;
+    }
 
-    public String getFileLocation() { return fileLocation; }
-    public void setFileLocation(String fileLocation) { this.fileLocation = fileLocation; }
+    public void setParentType(String parentType) {
+        this.parentType = parentType;
+    }
 
-    public String getFileHash() { return fileHash; }
-    public void setFileHash(String fileHash) { this.fileHash = fileHash; }
+    public Long getRelatesToId() {
+        return relatesToId;
+    }
+
+    public void setRelatesToId(Long relatesToId) {
+        this.relatesToId = relatesToId;
+    }
+
+    public String getRelatesToType() {
+        return relatesToType;
+    }
+
+    public void setRelatesToType(String relatesToType) {
+        this.relatesToType = relatesToType;
+    }
+
+    public Long getFileSize() {
+        return fileSize;
+    }
+
+    public void setFileSize(Long fileSize) {
+        this.fileSize = fileSize;
+    }
+
+    public String getFileLocation() {
+        return fileLocation;
+    }
+
+    public void setFileLocation(String fileLocation) {
+        this.fileLocation = fileLocation;
+    }
+
+    public String getFileHash() {
+        return fileHash;
+    }
+
+    public void setFileHash(String fileHash) {
+        this.fileHash = fileHash;
+    }
 
     public String getContent() {
         return ContentService.getContent(fileLocation);

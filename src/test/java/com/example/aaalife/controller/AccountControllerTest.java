@@ -2,6 +2,8 @@ package com.example.aaalife.controller;
 
 import com.example.aaalife.model.Account;
 
+import tools.jackson.databind.ObjectMapper;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jpa.test.autoconfigure.AutoConfigureTestEntityManager;
@@ -26,6 +28,22 @@ class AccountControllerTest {
 
     @Autowired
     private TestEntityManager entityManager;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @Test
+    @WithUserDetails("customer")
+    void testCreateAccount() throws Exception {
+        Account account = new Account();
+        account.setName("Test Account");
+
+        mockMvc.perform(post("/api/accounts")
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(account)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.name").value(account.getName()));
+    }
 
     @Test
     @WithUserDetails("customer")

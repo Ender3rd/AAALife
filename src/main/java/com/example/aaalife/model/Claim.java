@@ -8,6 +8,11 @@ import java.util.List;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JacksonInject;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.OptBoolean;
+
 @Entity
 @Table(indexes = {
         @Index(name = "idx_claim_policy", columnList = "policy_id")
@@ -16,6 +21,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public class Claim {
 
     @Id
+    @JacksonInject(optional = OptBoolean.TRUE)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -25,14 +31,17 @@ public class Claim {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, updatable = false)
+    @JsonBackReference(value = "user-claims")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "policy_id", nullable = false, updatable = false)
+    @JsonBackReference(value = "policy-claims")
     private Policy policy;
 
     @OneToMany(mappedBy = "claim", orphanRemoval = true)
     @OrderBy("createdAt DESC")
+    @JsonManagedReference(value = "claim-claimChanges")
     private List<ClaimChange> claimChanges;
 
     @Column(nullable = false)

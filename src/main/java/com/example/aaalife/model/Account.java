@@ -1,12 +1,18 @@
 package com.example.aaalife.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.fasterxml.jackson.annotation.JacksonInject;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.OptBoolean;
 
 @Entity
 @Table(indexes = {
@@ -16,6 +22,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public class Account {
 
     @Id
+    @JacksonInject(optional = OptBoolean.TRUE)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -26,7 +33,8 @@ public class Account {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "account", orphanRemoval = true)
+    @OneToMany(mappedBy = "account")
+    @JsonManagedReference(value = "account-policies")
     private List<Policy> policies;
 
     // creating user is not automatically given access in case the account is
@@ -63,7 +71,11 @@ public class Account {
         this.name = name;
     }
 
+    @NotNull
     public List<Policy> getPolicies() {
+        if (policies == null) {
+            policies = new ArrayList<>();
+        }
         return policies;
     }
 

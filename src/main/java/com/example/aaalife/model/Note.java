@@ -5,17 +5,21 @@ import java.time.Instant;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JacksonInject;
+import com.fasterxml.jackson.annotation.OptBoolean;
+
 import jakarta.persistence.*;
 
 @Entity
 @Table(indexes = {
-    @Index(name = "idx_note_parent", columnList = "parentId, parentType"),
-    @Index(name = "idx_note_relates_to", columnList = "relatesToId, relatesToType")
+        @Index(name = "idx_note_parent", columnList = "parentId, parentType"),
+        @Index(name = "idx_note_relates_to", columnList = "relatesToId, relatesToType")
 })
 @EntityListeners(AuditingEntityListener.class)
 public class Note {
 
     @Id
+    @JacksonInject(optional = OptBoolean.TRUE)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -38,7 +42,8 @@ public class Note {
     @Column(nullable = false, columnDefinition = "TEXT", updatable = false)
     private String content;
 
-    public Note() {}
+    public Note() {
+    }
 
     public Note(Long parentId, String parentType, Long relatesToId, String relatesToType, String content) {
         this.parentId = parentId;
@@ -49,24 +54,59 @@ public class Note {
     }
 
     // Getters and setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public Instant getCreatedAt() { return createdAt; }
-    public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public Long getParentId() { return parentId; }
-    public void setParentId(Long parentId) { this.parentId = parentId; }
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
 
-    public String getParentType() { return parentType; }
-    public void setParentType(String parentType) { this.parentType = parentType; }
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
 
-    public Long getRelatesToId() { return relatesToId; }
-    public void setRelatesToId(Long relatesToId) { this.relatesToId = relatesToId; }
+    public Long getParentId() {
+        return parentId;
+    }
 
-    public String getRelatesToType() { return relatesToType; }
-    public void setRelatesToType(String relatesToType) { this.relatesToType = relatesToType; }
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
+    }
 
-    public String getContent() { return content; }
-    public void setContent(String content) { this.content = content; }
+    public String getParentType() {
+        return parentType;
+    }
+
+    public void setParentType(String parentType) {
+        this.parentType = parentType;
+    }
+
+    public Long getRelatesToId() {
+        return relatesToId;
+    }
+
+    public void setRelatesToId(Long relatesToId) {
+        this.relatesToId = relatesToId;
+    }
+
+    public String getRelatesToType() {
+        return relatesToType;
+    }
+
+    public void setRelatesToType(String relatesToType) {
+        this.relatesToType = relatesToType;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 }

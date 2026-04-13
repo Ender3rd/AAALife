@@ -12,6 +12,7 @@ import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -37,9 +38,16 @@ class PolicyControllerTest {
     void testCreatePolicy() throws Exception {
         Account account = new Account();
         account.setName("Test Account");
-        account = entityManager.persistAndFlush(account);
 
-        Policy policy = new Policy("POL123", account);
+        MvcResult accountResult = mockMvc.perform(post("/api/accounts")
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(account)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.name").value(account.getName())).andReturn();
+        Account createdAccount = objectMapper.readValue(accountResult.getResponse().getContentAsString(),
+                Account.class);
+
+        Policy policy = new Policy("POL123", createdAccount);
 
         mockMvc.perform(post("/api/policies")
                 .contentType(MediaType.APPLICATION_JSON)

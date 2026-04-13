@@ -8,7 +8,9 @@ import java.util.List;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JacksonInject;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.OptBoolean;
 
 @Entity
 @Table(indexes = {
@@ -23,6 +25,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class User {
 
     @Id
+    @JacksonInject(optional = OptBoolean.TRUE)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -38,11 +41,11 @@ public class User {
     private Role role; // cleaner and less auditing issues if internal customers stay separate.
 
     @OneToMany(mappedBy = "user", orphanRemoval = false, fetch = FetchType.LAZY)
-    @JsonIgnore
+    @JsonManagedReference(value = "user-claimChanges")
     private List<ClaimChange> claimChanges;
 
     @OneToMany(mappedBy = "user", orphanRemoval = false, fetch = FetchType.LAZY)
-    @JsonIgnore
+    @JsonManagedReference(value = "user-claims")
     private List<Claim> claims;
 
     public User() {
