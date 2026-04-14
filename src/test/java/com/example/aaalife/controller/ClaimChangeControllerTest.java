@@ -54,7 +54,8 @@ class ClaimChangeControllerTest {
 
         ClaimChange claimChange = new ClaimChange(claim, user, ClaimStatus.Reviewable);
 
-        mockMvc.perform(post("/api/claim-changes")
+        mockMvc.perform(post("/api/accounts/{accountId}/policies/{policyId}/claims/{claimId}/changes", account.getId(),
+                policy.getId(), claim.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(claimChange)))
                 .andExpect(status().isCreated());
@@ -85,7 +86,9 @@ class ClaimChangeControllerTest {
         ClaimChange claimChange = new ClaimChange(claim, user, ClaimStatus.Reviewable);
         ClaimChange saved = entityManager.persistAndFlush(claimChange);
 
-        mockMvc.perform(get("/api/claim-changes/{id}", saved.getId()))
+        mockMvc.perform(
+                get("/api/accounts/{accountId}/policies/{policyId}/claims/{claimId}/changes/{id}", account.getId(),
+                        policy.getId(), claim.getId(), saved.getId()))
                 .andExpect(status().isOk());
     }
 }

@@ -47,4 +47,9 @@ public class AccountController {
         Account saved = accountRepository.save(account);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
+
+    public List<Account> getAll() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAll'");
+    }
 }

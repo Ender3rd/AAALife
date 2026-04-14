@@ -54,7 +54,7 @@ class ClaimControllerTest {
         Claim claim = new Claim(policy, user);
         claim.setIncidentDate(Instant.parse("2023-01-01T00:00:00Z"));
 
-        mockMvc.perform(post("/api/claims")
+        mockMvc.perform(post("/api/accounts/{accountId}/policies/{policyId}/claims", account.getId(), policy.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(claim)))
                 .andExpect(status().isCreated());
@@ -63,7 +63,6 @@ class ClaimControllerTest {
     @Test
     @WithUserDetails("customer")
     void testGetById() throws Exception {
-        // Create a claim
         Account account = new Account();
         account.setName("Test Account");
         account = entityManager.persistAndFlush(account);
@@ -80,7 +79,57 @@ class ClaimControllerTest {
         claim.setIncidentDate(Instant.parse("2023-01-01T00:00:00Z"));
         Claim saved = entityManager.persistAndFlush(claim);
 
-        mockMvc.perform(get("/api/claims/{id}", saved.getId()))
+        mockMvc.perform(get("/api/accounts/{accountId}/policies/{policyId}/claims/{claimId}", account.getId(),
+                policy.getId(), saved.getId()))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithUserDetails("customer")
+    void testGetAllPolicyClaims() throws Exception {
+        Account account = new Account();
+        account.setName("Test Account");
+        account = entityManager.persistAndFlush(account);
+
+        User user = new User();
+        user.setUsername("testuser");
+        user.setRole(Role.Adjuster);
+        user = entityManager.persistAndFlush(user);
+
+        Policy policy = new Policy("POL123", account);
+        policy = entityManager.persistAndFlush(policy);
+
+        Claim claim = new Claim(policy, user);
+        claim.setIncidentDate(Instant.parse("2023-01-01T00:00:00Z"));
+        Claim saved = entityManager.persistAndFlush(claim);
+
+        mockMvc.perform(get("/api/accounts/{accountId}/policies/{policyId}/claims", account.getId(),
+                policy.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(saved.getId()));
+    }
+
+    @Test
+    @WithUserDetails("customer")
+    void testGetAllClaims() throws Exception {
+        Account account = new Account();
+        account.setName("Test Account");
+        account = entityManager.persistAndFlush(account);
+
+        User user = new User();
+        user.setUsername("testuser");
+        user.setRole(Role.Adjuster);
+        user = entityManager.persistAndFlush(user);
+
+        Policy policy = new Policy("POL123", account);
+        policy = entityManager.persistAndFlush(policy);
+
+        Claim claim = new Claim(policy, user);
+        claim.setIncidentDate(Instant.parse("2023-01-01T00:00:00Z"));
+        Claim saved = entityManager.persistAndFlush(claim);
+
+        mockMvc.perform(get("/api/claims"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(saved.getId()));
     }
 }

@@ -40,7 +40,7 @@ public class Policy {
     @JsonBackReference(value = "account-policies")
     private Account account;
 
-    @OneToMany(mappedBy = "policy", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "policy", cascade = CascadeType.ALL)
     @JsonManagedReference(value = "policy-claims")
     private List<Claim> claims;
 
@@ -50,7 +50,6 @@ public class Policy {
     public Policy(String publicId, Account account) {
         this.publicId = publicId;
         this.account = account;
-        account.getPolicies().add(this);
     }
 
     // Getters and setters

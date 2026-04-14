@@ -3,12 +3,14 @@ package com.example.aaalife.controller;
 import com.example.aaalife.model.Claim;
 import com.example.aaalife.model.ClaimChange;
 import com.example.aaalife.model.ClaimStatus;
+import com.example.aaalife.model.Policy;
 import com.example.aaalife.model.User;
 import com.example.aaalife.repository.ClaimRepository;
+import com.example.aaalife.repository.PolicyRepository;
 import com.example.aaalife.repository.UserRepository;
 
-import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,15 +18,18 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/claims")
+@RequestMapping("/api/accounts/{accountId}/policies/{policyId}/claims")
 public class ClaimController {
 
+    private final PolicyRepository policyRepository;
     private final ClaimRepository claimRepository;
     private final UserRepository userRepository;
 
-    public ClaimController(ClaimRepository claimRepository, UserRepository userRepository) {
+    public ClaimController(ClaimRepository claimRepository, UserRepository userRepository,
+            PolicyRepository policyRepository) {
         this.claimRepository = claimRepository;
         this.userRepository = userRepository;
+        this.policyRepository = policyRepository;
     }
 
     @GetMapping("/{id}")
@@ -34,8 +39,14 @@ public class ClaimController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping()
+    public ResponseEntity<List<Claim>> getAll(@PathVariable Long accountId, @PathVariable Long policyId) {
+        return ResponseEntity.ok(claimRepository.findAllByPolicyId(policyId));
+    }
+
     @PostMapping
-    public ResponseEntity<Claim> create(@RequestBody Claim claim) {
+    public ResponseEntity<Claim> create(@RequestBody Claim claim, @PathVariable Long accountId,
+            @PathVariable Long policyId) {
         if (claim.getClaimChanges() != null && !claim.getClaimChanges().isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -49,18 +60,16 @@ public class ClaimController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
+        Optional<Policy> policyHuh = policyRepository.findById(policyId);
+        if (policyHuh.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        policyHuh.ifPresent(claim::setPolicy);
+
         ClaimChange claimChange = new ClaimChange(claim, user, ClaimStatus.Created);
         claim.setClaimChanges(List.of(claimChange));
+        claim.setUser(user);
         Claim saved = claimRepository.save(claim);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
-
-    @GetMapping("/duplicates/{since}/{before}")
-    public ResponseEntity<List<Claim>> getDuplicatesSince(@PathVariable String since, @PathVariable String before) {
-        Instant sinceTimestamp = Instant.parse(since);
-        Instant beforeTimestamp = Instant.parse(before);
-        List<Claim> duplicates = claimRepository.findDuplicatesBetween(sinceTimestamp, beforeTimestamp);
-        return duplicates.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(duplicates);
-    }
-
 }
